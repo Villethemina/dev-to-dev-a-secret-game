@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -15,13 +14,46 @@ class App extends Component {
      [ ' ', ' ', 'M', ' ', '4', '4', '4', ' ', ' ', ' ' ],
      [ ' ', 'M', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '5' ],
      [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '5' ]
-   ]
+   ],
+   enemyGrid: [
+    [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', ' ', ' ', 'M', ' ', ' ', 'S', 'S', 'S', ' ' ],
+    [ ' ', ' ', ' ', ' ', 'M', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', ' ', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ' ],
+    [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', 'ME', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', ' ', 'ME', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', 'ME', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+    [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ]
+  ],
 };
 
   componentDidMount() {
     fetch('https://jsonplaceholder.typicode.com/posts/1').then(data => {
       console.log(data);
     });
+  }
+
+  getCellColor(cell) {
+    switch (cell) {
+      case ' ':
+        return '#475EF5'
+      case 'X':
+      case 'S':
+        return '#f00'
+      case 'ME':
+      case 'M':
+        return '#000'
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+        return '#888'
+      default:
+        return '#fff'
+    }
   }
 
   renderHeaders(header, orientation) {
@@ -40,7 +72,7 @@ class App extends Component {
         <text
           x={orientation === "row" ? index * 40 + 60 : 20}
           y={orientation === "column" ? index * 40 + 60 : 22}
-          fontFamily="Verdana"
+          fontFamily="Tahoma"
           fontSize={20}
           fill="black"
           textAnchor="middle"
@@ -62,9 +94,11 @@ class App extends Component {
     return this.renderHeaders(rowHeaders, 'column');
   }
 
-  renderGrid() {
-    return this.state.grid.map((row, rowIndex) =>
+  renderCells(grid) {
+    return <g>
+      {grid.map((row, rowIndex) =>
       row.map((cell, cellIndex) =>
+        cell === ' ' ? null :
         <rect
           style={{
             stroke: '#ddd',
@@ -77,45 +111,84 @@ class App extends Component {
           }}
         />
       )
+    )}
+    </g>
+  }
+
+  renderWater() {
+    return (
+      <rect
+        style={{
+          fill: '#475EF5',
+          width: 400,
+          height: 400,
+          x: 40,
+          y: 40
+        }}
+        filter="url(#filter1)"
+      />
     );
   }
 
-  getCellColor(cell) {
-    switch (cell) {
-      case ' ':
-        return '#00f'
-      case 'X':
-        return '#ff0'
-      case 'S':
-        return '#f00'
-      case 'M':
-        return '#0f0'
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-        return '#888'
-      default:
-        return '#fff'
-    }
+  renderGrid() {
+    return <g>
+      {this.state.grid.map((row, rowIndex) =>
+      row.map((cell, cellIndex) =>
+        <rect
+          style={{
+            stroke: '#ddd',
+            strokeWidth: 1,
+            width: 40,
+            height: 40,
+            x: 40 * cellIndex + 40,
+            y: 40 * rowIndex + 40,
+            fillOpacity: 0
+          }}
+        />
+      )
+    )}
+    </g>
+  }
+
+  renderBoard(grid, title) {
+    return (
+      <div className="App-board-container">
+        <span className="App-board-title">{title}</span>
+        <svg className="App-svg">
+          <filter id="filter1">
+            <feSpecularLighting result="specOut"
+              specularExponent={20} lightingColor="#aaa">
+              <fePointLight x={120} y={125} z={150}/>
+            </feSpecularLighting>
+            <feComposite in="SourceGraphic" in2="specOut"
+              operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/>
+          </filter>
+          <g>
+            {this.renderRowHeaders()}
+            {this.renderColumnHeaders()}
+            {this.renderWater()}
+            {this.renderGrid()}
+            {this.renderCells(grid)}
+          </g>
+        </svg>
+      </div>
+    );
   }
 
   render() {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <div className="ocean">
+            <div className="wave"/>
+            <div className="wave"/>
+          </div>
+          <span className="App-header-text">Battleships</span>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <svg className="App-svg">
-          {this.renderRowHeaders()}
-          {this.renderColumnHeaders()}
-          {this.renderGrid()}
-        </svg>
+        <div className="App-boards">
+          {this.renderBoard(this.state.grid, 'Your board')}
+          {this.renderBoard(this.state.enemyGrid, 'Enemy board')}
+        </div>
       </div>
     );
   }
