@@ -5,7 +5,7 @@ using System.Web.Http;
 namespace BattleServer.Controllers
 {
 
-    [RoutePrefix("api")]
+    [RoutePrefix("")]
     public class StartGameController : ApiController
     {   [HttpGet]
         [Route("start_game")]
@@ -26,6 +26,13 @@ namespace BattleServer.Controllers
         public IEnumerable<String> end_game()
         {
             return new String[] { "end", "game" };
+        }
+
+        [HttpGet]
+        [Route("end_game")]
+        public IEnumerable<String> game_state()
+        {
+            return new String[] { "game", "state" };
         }
     }
 }
