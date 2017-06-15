@@ -1057,7 +1057,7 @@ window.Modernizr = (function( window, document, undefined ) {
       (function() {
         try {
             var a = document.createElement('a');
-            a.innerHTML = '<xyz></xyz>';
+            a.innerHTML = '<cellsWideyz></cellsWideyz>';
             //if the hidden property is implemented we can assume, that the browser supports basic HTML5 Styles
             supportsHtml5Styles = ('hidden' in a);
 

@@ -1,0 +1,5 @@
+G:\Git\Battleship\Server\BattleServer\Game\bin\Debug\Game.dll
+G:\Git\Battleship\Server\BattleServer\Game\bin\Debug\Game.pdb
+G:\Git\Battleship\Server\BattleServer\Game\obj\Debug\Game.csprojResolveAssemblyReference.cache
+G:\Git\Battleship\Server\BattleServer\Game\obj\Debug\Game.dll
+G:\Git\Battleship\Server\BattleServer\Game\obj\Debug\Game.pdb

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using System.Web.Http.Results;
+using Game.Enums;
+using Game.Extensions;
+using Game.Models;
 
 namespace BattleServer.Controllers
 {
@@ -9,9 +13,13 @@ namespace BattleServer.Controllers
     public class StartGameController : ApiController
     {   [HttpGet]
         [Route("start_game")]
-        public IEnumerable<String> start_game()
+        public OkNegotiatedContentResult<Grid> start_game()
         {
-            return new String[] { "value1", "value2" };
+            var game = new Game.Game(10, 10);
+            String[,] startGrid = game.ToArray();
+            var returableGrid = new Grid {grid = startGrid};
+
+            return Ok(returableGrid);
         }
 
         [HttpPost]
@@ -19,6 +27,8 @@ namespace BattleServer.Controllers
         public IEnumerable<String> next_turn()
         {
             return new String[] { "nxt", "turn" };
+
+            
         }
 
         [HttpPost]
@@ -35,4 +45,6 @@ namespace BattleServer.Controllers
             return new String[] { "game", "state" };
         }
     }
+
+    
 }
