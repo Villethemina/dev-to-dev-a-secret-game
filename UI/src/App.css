@@ -18,6 +18,18 @@
   font-size: large;
 }
 
+.App-svg {
+  width: 440px;
+  height: 440px;
+  background-color: #eee;
+}
+
+.App-rect {
+  width: 40px;
+  height: 40px;
+  fill: red;
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
