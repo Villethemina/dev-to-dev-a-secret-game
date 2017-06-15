@@ -3,6 +3,27 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  state = {
+    grid: [
+     [ '1', ' ', '2', '2', '2', '2', ' ', ' ', ' ', ' ' ],
+     [ '1', ' ', ' ', 'ME', ' ', ' ', 'S', 'S', 'S', ' ' ],
+     [ '1', ' ', ' ', ' ', 'ME', ' ', ' ', ' ', ' ', ' ' ],
+     [ '1', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+     [ '1', ' ', '3', ' ', ' ', 'X', 'X', ' ', ' ', ' ' ],
+     [ ' ', ' ', '3', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+     [ ' ', 'M', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
+     [ ' ', ' ', 'M', ' ', '4', '4', '4', ' ', ' ', ' ' ],
+     [ ' ', 'M', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '5' ],
+     [ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '5' ]
+   ]
+};
+
+  componentDidMount() {
+    fetch('https://jsonplaceholder.typicode.com/posts/1').then(data => {
+      console.log(data);
+    });
+  }
+
   render() {
     return (
       <div className="App">
